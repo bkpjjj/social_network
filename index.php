@@ -1,5 +1,3 @@
-//Pasha was here!
-
 <?php
 
 ?>
