@@ -119,6 +119,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
         <div>
             <button type="submit">Вход</button>
             <button type="reset">Сброс</button>
+            <a href="signin.php">Sign in</a>
         </div>
         </form>
     </div>

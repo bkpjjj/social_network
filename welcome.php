@@ -9,7 +9,7 @@
 <body>
     <div align="center">
     <h1>Вы успешно зарегестрированны!</h1>
-    <a href="/signin.php">Назад</a>
+    <a href="/social_network/signin.php">Назад</a>
     </div>
 </body>
 </html>
