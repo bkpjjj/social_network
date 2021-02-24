@@ -36,7 +36,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
     }
     else if(strlen(trim($password)) <= 6 || strlen(trim($password)) >= 16)
     {
-        $password_error = 'Логин не должен быть меньше 6 и больше 16 символов.';
+        $password_error = 'пароль не должен быть меньше 6 и больше 16 символов.';
     }
 
 
