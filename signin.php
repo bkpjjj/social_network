@@ -2,32 +2,32 @@
 session_start();
     if(isset($_SESSION['loggedin']) && isset($_SESSION['loggedin']) == true)
     {
-        header("location: Oops.php");
+        header("location: im.php");
         exit;
     }
 require_once 'config.php';
 
-$username = $password = '';
-$username_error = $password_error = '';
+$login = $password = '';
+$login_error = $password_error = '';
 
 if($_SERVER['REQUEST_METHOD'] == 'POST')
 {
-    if(isset($_POST['username_login']))
+    if(isset($_POST['login']))
     {
-        $username = $_POST['username_login'];
+        $login = $_POST['login'];
     }
-    if(isset($_POST['password_login']))
+    if(isset($_POST['password']))
     {
-        $password = $_POST['password_login'];
+        $password = $_POST['password'];
     }
 
-    if(empty(trim($username)))
+    if(empty(trim($login)))
     {
-        $username_error = 'Введите логин!';
+        $login_error = 'Введите логин!';
     }
-    else if(strlen(trim($username)) <= 3 || strlen(trim($username)) >= 32)
+    else if(strlen(trim($login)) <= 3 || strlen(trim($login)) >= 32)
     {
-        $username_error = 'Логин не должен быть меньше 3 и больше 32 символов.';
+        $login_error = 'Логин не должен быть меньше 3 и больше 32 символов.';
     }
 
     if(empty(trim($password)))
@@ -40,15 +40,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
     }
 
 
-    if(empty($username_error) && empty($password_error)){
+    if(empty($login_error) && empty($password_error)){
 
-        $sql = "SELECT id, username, `password` FROM users WHERE username = ?";
+        $sql = "SELECT id, login, `password` FROM users WHERE login = ?";
         
         if($stmt = mysqli_prepare($link, $sql)){
 
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
+            mysqli_stmt_bind_param($stmt, "s", $param_login);
             
-            $param_username = $username;
+            $param_login = $login;
             
 
             if(mysqli_stmt_execute($stmt)){
@@ -56,22 +56,22 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
                 mysqli_stmt_store_result($stmt);
                 
                 if(mysqli_stmt_num_rows($stmt) == 1){                    
-                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);
+                    mysqli_stmt_bind_result($stmt, $id, $login, $hashed_password);
                     if(mysqli_stmt_fetch($stmt)){
                         if(password_verify($password, $hashed_password)){
                             session_start();
                             
                             $_SESSION["loggedin"] = true;
                             $_SESSION["id"] = $id;
-                            $_SESSION["username"] = $username;                            
-                            //тут указать ссылку на страницу
-                            header("location: welcome.php");
+                            $_SESSION["login"] = $login;                            
+                            
+                            header("location: im.php");
                         } else{
                             $password_error = "The password you entered was not valid.";
                         }
                     }
                 } else{
-                    $username_error = "No account found with that username.";
+                    $login_error = "No account found with that login.";
                 }
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
@@ -99,11 +99,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
         <form action="" method="post">
         <h1>Sign in</h1>   
             <div class="con-input">
-                <input type="text" placeholder="login" name="username_login" value="<?php echo $username; ?>"/>
-                <span><?php echo $username_error; ?></span>
+                <input type="text" placeholder="login" name="login" value="<?php echo $login; ?>"/>
+                <span><?php echo $login_error; ?></span>
             </div>
             <div class="con-input">
-              <input type="password" placeholder="password" name="password_login"/>
+              <input type="password" placeholder="password" name="password"/>
               <span><?php echo $password_error; ?></span>
             </div>
             <div>
